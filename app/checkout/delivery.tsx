@@ -7,10 +7,23 @@ import {
   TextInput,
   useTheme,
   RadioButton,
+  HelperText,
 } from "react-native-paper";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  DeliveryInfo,
+  DeliveryInfoSchema,
+} from "../../src/schema/checkout.schema";
+import ControlledInput from "../../src/components/ControlledInput";
 
 export default function DeliveryDetails() {
-  const [shipping, setShipping] = useState("free");
+  const { control, handleSubmit } = useForm<DeliveryInfo>({
+    resolver: zodResolver(DeliveryInfoSchema),
+    defaultValues: {
+      shipping: "free",
+    },
+  });
 
   const router = useRouter();
   const theme = useTheme();
@@ -27,32 +40,46 @@ export default function DeliveryDetails() {
       <Card style={{ backgroundColor: theme.colors.background }}>
         <Card.Title title="Delivery Details" titleVariant="titleLarge" />
         <Card.Content style={{ gap: 15 }}>
-          <TextInput
-            label="City"
-            style={{ backgroundColor: theme.colors.background }}
+          <ControlledInput control={control} name="city" label={"City"} />
+          <ControlledInput
+            control={control}
+            name="postalCode"
+            label={"Postal Code"}
           />
-          <TextInput
-            label="Postal Code"
-            style={{ backgroundColor: theme.colors.background }}
-          />
-          <TextInput
-            label="Address"
-            style={{ backgroundColor: theme.colors.background }}
-          />
+          <ControlledInput control={control} name="address" label={"Address"} />
         </Card.Content>
       </Card>
 
       <Card style={{ backgroundColor: theme.colors.background }}>
         <Card.Title title="Delivery Options" titleVariant="titleLarge" />
         <Card.Content style={{ gap: 15 }}>
-          <RadioButton.Group value={shipping} onValueChange={setShipping}>
-            <RadioButton.Item label="Free" value="free" />
-            <RadioButton.Item label="Fast" value="fast" />
-            <RadioButton.Item label="Same day" value="same_day" />
-          </RadioButton.Group>
+          <Controller
+            control={control}
+            name="shipping"
+            render={({
+              field: { value, onChange, onBlur },
+              fieldState: { error, invalid },
+            }) => (
+              <View>
+                <RadioButton.Group
+                  value={value}
+                  onValueChange={(value: DeliveryInfo["shipping"]) =>
+                    onChange(value)
+                  }
+                >
+                  <RadioButton.Item label="Free" value="free" />
+                  <RadioButton.Item label="Fast" value="fast" />
+                  <RadioButton.Item label="Same day" value="same_day" />
+                </RadioButton.Group>
+                <HelperText type="error" visible={invalid}>
+                  {error?.message}
+                </HelperText>
+              </View>
+            )}
+          />
         </Card.Content>
       </Card>
-      <Button onPress={nextPage} mode="contained">
+      <Button onPress={handleSubmit(nextPage)} mode="contained">
         Next
       </Button>
     </ScrollView>

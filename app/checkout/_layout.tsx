@@ -14,7 +14,7 @@ export default function CheckoutStack() {
         }}
       >
         <Stack.Screen
-          name="index"
+          name="personal"
           options={{ title: "Personal Information" }}
         />
         <Stack.Screen
