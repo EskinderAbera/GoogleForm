@@ -17,3 +17,14 @@ export const DeliveryInfoSchema = z.object({
 });
 
 export type DeliveryInfo = z.infer<typeof DeliveryInfoSchema>;
+
+// payment form
+
+export const PaymentInfoSchema = z.object({
+  number: z.string().min(3).max(50),
+  expirationDate: z.string().min(3).max(50),
+  securityCode: z.string().min(3).max(50),
+  saveInformation: z.boolean(),
+});
+
+export type PaymentInfo = z.infer<typeof PaymentInfoSchema>;

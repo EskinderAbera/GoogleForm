@@ -27,9 +27,7 @@ export default function PersonalDetails() {
   const router = useRouter();
   const theme = useTheme();
 
-  const nextPage = (data) => {
-    console.log(data);
-
+  const nextPage = (data: PersonalInfo) => {
     router.push("/checkout/delivery");
   };
 
