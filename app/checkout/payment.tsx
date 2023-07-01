@@ -16,10 +16,9 @@ export default function PaymentDetails() {
   });
   const router = useRouter();
   const theme = useTheme();
-  const { setPayment, onSubmitAll } = useCheckoutContext();
+  const { onSubmitAll } = useCheckoutContext();
 
   const nextPage = async (data: PaymentInfo) => {
-    // setPayment(data);
     const success = await onSubmitAll(data);
     if (success) {
       router.push("/");
@@ -46,14 +45,14 @@ export default function PaymentDetails() {
               control={control}
               name="expirationDate"
               label={"Expiration Date"}
-              placeholder="MM/YY"
+              placeholder="MM/YYYY"
               style={{ backgroundColor: theme.colors.background, flex: 3 }}
             />
             <ControlledInput
               control={control}
               name="securityCode"
               label={"Security Code"}
-              placeholder="MM/YY"
+              placeholder="123"
               style={{ backgroundColor: theme.colors.background, flex: 2 }}
             />
           </View>

@@ -25,6 +25,9 @@ export default function DeliveryDetails() {
     resolver: zodResolver(DeliveryInfoSchema),
     defaultValues: {
       shipping: "free",
+      city: "Vancouver",
+      postalCode: "V5K 0A1",
+      address: "1234 Main St",
     },
   });
 

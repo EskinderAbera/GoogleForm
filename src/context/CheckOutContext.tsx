@@ -3,6 +3,7 @@ import {
   DeliveryInfo,
   PaymentInfo,
   PersonalInfo,
+  CheckoutData,
 } from "../schema/checkout.schema";
 
 type CheckOutContextType = {
@@ -30,11 +31,13 @@ export default function CheckoutContextProvider({
 
   const onSubmitAll = async (paymentInfo: PaymentInfo) => {
     setPayment(paymentInfo);
-
+    const checkoutData: CheckoutData = {
+      ...personal,
+      ...delivery,
+      ...paymentInfo,
+    };
     console.log("Submitted all");
-    console.log(personal);
-    console.log(delivery);
-    console.log(paymentInfo);
+    console.log(checkoutData);
 
     return true;
   };
