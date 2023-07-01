@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import { Button, Card, useTheme, Checkbox } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +8,7 @@ import {
   PaymentInfoSchema,
 } from "../../src/schema/checkout.schema";
 import ControlledInput from "../../src/components/ControlledInput";
+import { useCheckoutContext } from "../../src/context/CheckOutContext";
 
 export default function PaymentDetails() {
   const { control, handleSubmit } = useForm<PaymentInfo>({
@@ -15,9 +16,17 @@ export default function PaymentDetails() {
   });
   const router = useRouter();
   const theme = useTheme();
+  const { setPayment, onSubmitAll } = useCheckoutContext();
 
-  const nextPage = () => router.push("/");
-
+  const nextPage = async (data: PaymentInfo) => {
+    // setPayment(data);
+    const success = await onSubmitAll(data);
+    if (success) {
+      router.push("/");
+    } else {
+      Alert.alert("Something went wrong");
+    }
+  };
   return (
     <ScrollView
       contentContainerStyle={{ gap: 15 }}

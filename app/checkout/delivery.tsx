@@ -16,8 +16,11 @@ import {
   DeliveryInfoSchema,
 } from "../../src/schema/checkout.schema";
 import ControlledInput from "../../src/components/ControlledInput";
+import { useCheckoutContext } from "../../src/context/CheckOutContext";
 
 export default function DeliveryDetails() {
+  const { setDelivery } = useCheckoutContext();
+
   const { control, handleSubmit } = useForm<DeliveryInfo>({
     resolver: zodResolver(DeliveryInfoSchema),
     defaultValues: {
@@ -28,7 +31,8 @@ export default function DeliveryDetails() {
   const router = useRouter();
   const theme = useTheme();
 
-  const nextPage = () => {
+  const nextPage = (data: DeliveryInfo) => {
+    setDelivery(data);
     router.push("/checkout/payment");
   };
 

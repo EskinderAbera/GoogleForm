@@ -1,33 +1,27 @@
 import { Link, useRouter } from "expo-router";
-import { View, Text, ScrollView } from "react-native";
-import {
-  Button,
-  Card,
-  HelperText,
-  TextInput,
-  useTheme,
-} from "react-native-paper";
-import { useForm, Controller } from "react-hook-form";
+import { ScrollView } from "react-native";
+import { Button, Card, useTheme } from "react-native-paper";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   PersonalInfoSchema,
   PersonalInfo,
 } from "../../src/schema/checkout.schema";
 import ControlledInput from "../../src/components/ControlledInput";
+import { useCheckoutContext } from "../../src/context/CheckOutContext";
 
 export default function PersonalDetails() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<PersonalInfo>({
+  const { control, handleSubmit } = useForm<PersonalInfo>({
     resolver: zodResolver(PersonalInfoSchema),
   });
+
+  const { setPersonal } = useCheckoutContext();
 
   const router = useRouter();
   const theme = useTheme();
 
   const nextPage = (data: PersonalInfo) => {
+    setPersonal(data);
     router.push("/checkout/delivery");
   };
 
